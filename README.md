@@ -29,3 +29,35 @@ INSERT INTO Delivery_Partner (Brand_1, Brand_2, Brand_3, Winner) VALUES
  ('D', 'E', 'A', 'A'),
  ('F', 'B', 'C', 'F');
 ```
+
+```sql
+WITH brands AS
+(
+SELECT Brand_1 FROM Delivery_Partner
+UNION ALL
+SELECT Brand_2 FROM Delivery_Partner
+UNION ALL
+SELECT Brand_3 FROM Delivery_Partner
+),
+
+winner AS 
+(
+SELECT winner , COUNT(winner) as wincount FROM Delivery_Partner
+GROUP BY winner ,brand_1
+ORDER BY winner
+),
+
+
+race_info AS
+(
+SELECT b.brand_1 as brand, COUNT(b.brand_1) as total_rides, CASE WHEN wincount IS NULL THEN 0 ELSE wincount END as total_rides_won 
+FROM brands b
+LEFT JOIN winner w ON
+b.brand_1 = w.winner
+GROUP BY b.brand_1,wincount
+ORDER BY b.brand_1
+)
+
+SELECT brand,total_rides,total_rides_won , total_rides - total_rides_won as total_rides_lost FROM race_info
+ORDER BY brand
+```
