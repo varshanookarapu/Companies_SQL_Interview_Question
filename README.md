@@ -64,3 +64,34 @@ ORDER BY brand
 <img width="1792" height="391" alt="image" src="https://github.com/user-attachments/assets/27bcad5a-da70-48f6-a2b6-695a5cba1556" />
 ---
 
+**Question 2 :**  Write an SQL query that produces a comma-separated list of passengers who can be accommodated in each lift without exceeding its capacity.
+The passengers should be listed in increasing order of their weight.
+
+```sql
+CREATE TABLE  Lift_Passengers(
+Passenger_Name Varchar(20),
+Weight_Kg int,
+Lift_Id int);
+
+CREATE TABLE Lift
+( Id int,
+Capacity_Kg Bigint);
+
+INSERT INTO Lift_Passengers  (Passenger_Name,Weight_Kg,Lift_Id) VALUES
+('Mark',85,1),
+('Antony',73,1),
+('David',95,1),
+('Mary',80,1),
+('John',83,2),
+('Robert',77,2),
+('Maria',73,2),
+('Susan',85,2);
+
+
+Insert into Lift (Id,Capacity_Kg) Values
+(1,300),
+(2,350);
+
+```
+
+
