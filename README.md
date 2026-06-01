@@ -61,3 +61,6 @@ ORDER BY b.brand_1
 SELECT brand,total_rides,total_rides_won , total_rides - total_rides_won as total_rides_lost FROM race_info
 ORDER BY brand
 ```
+<img width="1792" height="391" alt="image" src="https://github.com/user-attachments/assets/27bcad5a-da70-48f6-a2b6-695a5cba1556" />
+---
+
