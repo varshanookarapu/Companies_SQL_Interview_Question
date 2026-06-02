@@ -134,5 +134,20 @@ GROUP BY lift_id
 ```
 <img width="873" height="211" alt="image" src="https://github.com/user-attachments/assets/5f6996f4-28d0-4e01-a5da-13c39aa862bf" />
 
+---
+**Question 3 :** User Retention (Cohort Analysis) 
+Calculate retention for users whose first purchase was in Jan 2024 and  returned in Feb 2024
+```sql
+CREATE TABLE user_purchases(
+user_id INT,
+purchase_date DATE );
+
+INSERT INTO user_purchases VALUES
+(1,'2024-01-10'),(1,'2024-02-15'), -- retained
+(2,'2024-01-20'), -- not retained
+(3,'2024-02-01'), -- not  in JAN cohort
+(4,'2024-01-05'),(1,'2024-02-20') -- retained
+
+```
 
 
