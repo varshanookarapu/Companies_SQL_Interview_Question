@@ -93,5 +93,30 @@ Insert into Lift (Id,Capacity_Kg) Values
 (2,350);
 
 ```
+```sql
+--SOLUTION 1 : Various combinations of passengers that can enter the lift without exceeding the lift capacity 
+WITH lift_stats AS
+(
+SELECT lp1.lift_id,lp1.passenger_name as p1 ,lp2.passenger_name as p2 ,lp3.passenger_name as p3,lp1.weight_kg,lp2.weight_kg,lp3.weight_kg , lp1.weight_kg+lp2.weight_kg+lp3.weight_kg as combined_weight
+FROM Lift_Passengers lp1 
+JOIN Lift_Passengers lp2 ON 
+lp1.Lift_Id = lp2.Lift_Id
+JOIN Lift_Passengers lp3 ON
+lp2.Lift_Id =lp3.Lift_Id
+WHERE lp1.passenger_name <> lp2.passenger_name AND lp1.passenger_name != lp3.passenger_name AND lp2.passenger_name != lp3.passenger_name
+AND lp1.weight_kg < lp2.weight_kg  AND lp1.weight_kg < lp3.weight_kg AND lp2.weight_kg < lp3.weight_kg
+)
+
+
+SELECT lift_id , p1|| ' ,' || p2 || ' ,' || p3 as passengers_combinations ,combined_weight
+  FROM lift_stats
+
+```
+<img width="1538" height="439" alt="image" src="https://github.com/user-attachments/assets/c91873c9-a71e-4399-af1d-69abb1543bda" />
+
+---
+```sql
+SOLUTION 2 
+```
 
 
