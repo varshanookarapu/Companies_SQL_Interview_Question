@@ -116,7 +116,23 @@ SELECT lift_id , p1|| ' ,' || p2 || ' ,' || p3 as passengers_combinations ,combi
 
 ---
 ```sql
-SOLUTION 2 
+SOLUTION 2 : Using Cumulative Totals
+WITH lift_stats AS(
+
+SELECT * , SUM(weight_kg) OVER (PARTITION BY lift_id ORDER BY weight_kg) as cumulative_weight
+FROM Lift_Passengers lp 
+JOIN lift l ON 
+lp.lift_id = l.id
+)
+
+
+SELECT lift_id, STRING_AGG(passenger_name, ' , ' ORDER BY weight_kg) as passenger_combinations 
+FROM lift_stats
+WHERE cumulative_weight < capacity_kg
+GROUP BY lift_id
+
 ```
+<img width="873" height="211" alt="image" src="https://github.com/user-attachments/assets/5f6996f4-28d0-4e01-a5da-13c39aa862bf" />
+
 
 
