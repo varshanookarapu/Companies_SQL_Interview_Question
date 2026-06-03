@@ -174,8 +174,49 @@ jan_users_cohort AS
 ROUND(  100 * (SELECT COUNT(DISTINCT user_id) FROM users_retained_feb )::NUMERIC/ (SELECT COUNT(DISTINCT user_id) FROM jan_users_cohort) ,2)
   
   AS retention_date
-   
+
 ```
 <img width="305" height="143" alt="image" src="https://github.com/user-attachments/assets/fc6bea7b-3c10-4d52-a5cd-5e3d2cef38e4" />
 
+---
+
+Question 3 :  Identifying "Repeated" Transactions (10-Min Rule)
+Identify potential duplicate transactions. Find instances where the same user_id spent the same amount at the same merchant_id within 10 minutes of a previous transaction.
+Sample Data:
+```sql
+CREATE TABLE transactions (
+    transaction_id INT,
+    user_id INT,
+    merchant_id INT,
+    amount DECIMAL(10,2),
+    created_at DATETIME
+);
+
+INSERT INTO transactions VALUES 
+(101, 1, 10, 50.00, '2024-03-01 10:00:00'),
+(102, 1, 10, 50.00, '2024-03-01 10:05:00'), -- Duplicate (within 5 mins)
+(103, 1, 10, 50.00, '2024-03-01 10:20:00'); -- Not duplicate (>10 mins)
+ ```
+
+```sql
+WITH transactions_cte AS
+(
+SELECT *, LAG(created_at) OVER(PARTITION BY user_id,merchant_id,amount ORDER BY created_at) as previous_transaction_created_at
+FROM transactions
+),
+
+transaction_times AS
+(
+SELECT * , 
+(created_at  - previous_transaction_created_at )  AS transaction_time_difference
+FROM transactions_cte
+)
+
+SELECT transaction_id as duplicate_transaction_id FROM transaction_times WHERE
+
+previous_transaction_created_at IS NOT NULL AND 
+transaction_time_difference < INTERVAL '10 minutes'
+```
+
+<img width="399" height="155" alt="image" src="https://github.com/user-attachments/assets/410386ca-976b-4f1d-8417-f01f1f33e050" />
 
