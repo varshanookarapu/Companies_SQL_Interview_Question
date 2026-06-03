@@ -221,3 +221,42 @@ transaction_time_difference < INTERVAL '10 minutes'
 
 <img width="399" height="155" alt="image" src="https://github.com/user-attachments/assets/410386ca-976b-4f1d-8417-f01f1f33e050" />
 
+---
+**Question 5 :Calculating Median Without Built-in Functions
+ Calculate the median salary for each department. If a department has an even number of employees, the median is the average of the two middle values.
+
+```sql 
+Sample Data:
+
+CREATE TABLE employees (
+    emp_id INT,
+    dept_id INT,
+    salary INT
+);
+INSERT INTO employees VALUES 
+(1, 1, 5000), (2, 1, 6000), (3, 1, 7000),    -- Median is 6000
+(4, 2, 4000), (5, 2, 8000);                 -- Median is 6000 (avg of 4k & 8k) 
+```
+```sql
+WITH employee_rank AS
+(
+SELECT * , ROW_NUMBER() OVER(PARTITION BY dept_id ORDER BY salary) as rank FROM employees
+) ,
+
+employee_count AS
+(
+ SELECT dept_id, COUNT(*) as employee_count FROM employees GROUP BY dept_id 
+)
+
+SELECT er.dept_id , AVG(salary) :: INT as median_salary
+FROM 
+employee_rank er JOIN 
+employee_count ec
+ON er.dept_id = ec.dept_id
+WHERE (employee_count % 2 = 1 AND rank = (employee_count+1)/2  )
+OR (employee_count % 2 = 0 AND rank IN ( employee_count/2 , (employee_count/2)+1))
+GROUP BY er.dept_id
+ORDER BY er.dept_id
+
+```
+<img width="946" height="204" alt="image" src="https://github.com/user-attachments/assets/f1a60b65-1258-4939-af23-d4fc09c32f3f" />
