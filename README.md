@@ -149,5 +149,33 @@ INSERT INTO user_purchases VALUES
 (4,'2024-01-05'),(1,'2024-02-20') -- retained
 
 ```
+```sql
+WITH first_purchase AS
+(
+  SELECT user_id , MIN(purchase_date) as first_purchase FROM user_purchases
+  GROUP BY user_id
+),
+jan_users_cohort AS
+(
+  SELECT user_id FROM first_purchase WHERE
+  first_purchase >= '2024-01-01' AND first_purchase <'2024-02-01'
+ ),
+ 
+ users_retained_feb AS
+ (
+   SELECT up.user_id  FROM user_purchases up
+   INNER JOIN jan_users_cohort jc ON
+   up.user_id = jc.user_id
+   WHERE purchase_date >= '2024-02-01' AND purchase_date < '2024-03-01'
+  )
+  
+  SELECT 
+  
+ROUND(  100 * (SELECT COUNT(DISTINCT user_id) FROM users_retained_feb )::NUMERIC/ (SELECT COUNT(DISTINCT user_id) FROM jan_users_cohort) ,2)
+  
+  AS retention_date
+   
+```
+<img width="305" height="143" alt="image" src="https://github.com/user-attachments/assets/fc6bea7b-3c10-4d52-a5cd-5e3d2cef38e4" />
 
 
