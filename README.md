@@ -222,7 +222,7 @@ transaction_time_difference < INTERVAL '10 minutes'
 <img width="399" height="155" alt="image" src="https://github.com/user-attachments/assets/410386ca-976b-4f1d-8417-f01f1f33e050" />
 
 ---
-**Question 5 :Calculating Median Without Built-in Functions
+**Question 5 :** Calculating Median Without Built-in Functions
  Calculate the median salary for each department. If a department has an even number of employees, the median is the average of the two middle values.
 
 ```sql 
