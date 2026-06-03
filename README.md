@@ -180,7 +180,7 @@ ROUND(  100 * (SELECT COUNT(DISTINCT user_id) FROM users_retained_feb )::NUMERIC
 
 ---
 
-Question 3 :  Identifying "Repeated" Transactions (10-Min Rule)
+**Question 4 :**  Identifying "Repeated" Transactions (10-Min Rule)
 Identify potential duplicate transactions. Find instances where the same user_id spent the same amount at the same merchant_id within 10 minutes of a previous transaction.
 Sample Data:
 ```sql
