@@ -217,6 +217,7 @@ SELECT transaction_id as duplicate_transaction_id FROM transaction_times WHERE
 previous_transaction_created_at IS NOT NULL AND 
 transaction_time_difference < INTERVAL '10 minutes'
 ```
+<img width="1599" height="239" alt="image" src="https://github.com/user-attachments/assets/d2a6363d-f2c9-46e0-8320-e4fb7a7914e9" />
 
 <img width="399" height="155" alt="image" src="https://github.com/user-attachments/assets/410386ca-976b-4f1d-8417-f01f1f33e050" />
 
