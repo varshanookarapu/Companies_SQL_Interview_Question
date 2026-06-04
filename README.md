@@ -260,3 +260,47 @@ ORDER BY er.dept_id
 
 ```
 <img width="946" height="204" alt="image" src="https://github.com/user-attachments/assets/f1a60b65-1258-4939-af23-d4fc09c32f3f" />
+
+---
+
+**Question 6 :** Continuous Winning Streaks
+For each player, find the length of their longest continuous winning streak (consecutive 'Win' results).
+
+```sql
+Sample Data:
+
+CREATE TABLE match_results (
+    player_id INT,
+    match_date DATE,
+    result VARCHAR(10) -- 'Win', 'Loss', 'Draw'
+);
+INSERT INTO match_results VALUES 
+(1, '2024-01-01', 'Win'), (1, '2024-01-02', 'Win'), (1, '2024-01-03', 'Loss'), (1, '2024-01-04', 'Win'),
+(2, '2024-01-01', 'Win'), (2, '2024-01-02', 'Loss');
+```
+
+```sql
+```
+
+---
+
+**Question 7 :**  Sessionizing User Events (30-Min Gap)
+Question: Group clicks into unique sessions. A new session starts if a user has been inactive for more than 30 minutes. Assign a session_id to each click.
+
+```sql
+Sample Data:
+
+CREATE TABLE web_logs (
+    user_id INT,
+    event_time datetime
+);
+INSERT INTO web_logs VALUES 
+(1, '2024-04-01 12:00:00'),
+(1, '2024-04-01 12:15:00'), -- Session 1
+(1, '2024-04-01 13:00:00'), -- Session 2 (Gap > 30m)
+(1, '2024-04-01 13:10:00'); -- Session 2
+```
+
+```sql
+```
+---
