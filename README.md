@@ -280,7 +280,41 @@ INSERT INTO match_results VALUES
 ```
 
 ```sql
+WITH previous_result_cte AS
+(
+SELECT *, LAG(result) OVER(PARTITION BY player_id ORDER BY match_date) as previous_result FROM match_results
+),
+
+--this is an islands and gaps problem, since we are trying to identify consecutive streaks we consider those groups as one island and when the streak breaks its called a gap
+
+-- Now we need to identify the streak boundary , for that I will create flags 
+
+flag_cte AS
+(
+SELECT *, CASE WHEN result='Win' AND previous_result='Win' THEN 0 ELSE 1 END as flag
+FROM previous_result_cte
+),
+
+-- Here when flag is 0 it indicates that streak is continuning and whenever its a new group/ boundary it assigns flag 1
+
+-- Now we assign group ids
+group_cte AS
+(
+SELECT * ,SUM(flag) OVER(PARTITION BY player_id ORDER BY match_date) as group_id FROM flag_cte
+),
+
+-- Now we got the group ids from here we need to segregate the Win streaks
+win_streak_cte AS
+(
+SELECT player_id,group_id,COUNT(*) as win_streak FROM group_cte
+GROUP BY player_id,group_id
+)
+
+SELECT player_id, MAX(win_streak) as highest_win_streak FROM win_streak_cte 
+GROUP BY player_id
+ORDER BY player_id
 ```
+<img width="1034" height="213" alt="image" src="https://github.com/user-attachments/assets/46bc588b-96c6-4795-a8d9-59740f6c99b2" />
 
 ---
 
