@@ -336,5 +336,26 @@ INSERT INTO web_logs VALUES
 ```
 
 ```sql
+WITH cte AS(
+SELECT *, LAG(event_time) OVER(ORDER BY event_time) as previous_event_time FROM web_logs
+),
+
+cte2 AS
+(
+
+SELECT user_id, event_time,previous_event_time , (event_time-previous_event_time) as time_difference FROM cte
+),
+
+boundary_cte3 AS(
+
+SELECT *, CASE 
+  WHEN previous_event_time IS NULL THEN 1
+  WHEN time_difference >= INTERVAL '30 minutes' THEN 1 ELSE 0 END as flag FROM cte2
+)
+
+SELECT  user_id,event_time , SUM(flag) OVER(ORDER BY event_time) AS session_id FROM boundary_cte3
+
 ```
+<img width="1609" height="353" alt="image" src="https://github.com/user-attachments/assets/436a2586-5c1e-4f1b-a012-a7beeab408e7" />
+
 ---
