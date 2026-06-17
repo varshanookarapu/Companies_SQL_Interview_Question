@@ -359,3 +359,39 @@ SELECT  user_id,event_time , SUM(flag) OVER(ORDER BY event_time) AS session_id F
 <img width="1609" height="353" alt="image" src="https://github.com/user-attachments/assets/436a2586-5c1e-4f1b-a012-a7beeab408e7" />
 
 ---
+
+## FAANG Interview Question 
+
+**Problem Statement:**
+You’re given a table named `Club` with three columns:
+Club_ID  
+Member_ID  
+EDU  
+
+A member can belong to multiple clubs, and the `EDU` column represents different rewards with the following point values:
+MM – 0.5  
+CI – 0.5  
+CO – 0.5  
+CD – 1  
+CL – 1  
+CM – 1  
+
+**Your task:**
+Write an SQL query to calculate the total points scored by each club.
+
+```sql
+Table Create Statements:
+Create Table Club (
+Club_Id int,
+Member_Id int,
+EDU varchar(30))
+
+Insert into Club Values (1001,210,Null)
+Insert into Club Values (1001,211,'MM:CI')
+Insert into Club Values (1002,215,'CD:CI:CM')
+Insert into Club Values (1002,216,'CL:CM')
+Insert into Club Values (1002,217,'MM:CM')
+Insert into Club Values (1003,255,Null)
+Insert into Club Values (1001,216,'CO:CD:CL:MM')
+Insert into Club Values (1002,210,Null)
+```
