@@ -394,3 +394,38 @@ Insert into Club Values (1001,210,Null),
  (1001,216,'CO:CD:CL:MM'),
  (1002,210,Null)
 ```
+
+```sql
+WITH club_cte AS(
+SELECT club_id,member_id , 
+   UNNEST (STRING_TO_ARRAY(EDU, ':'))  as club_name FROM club 
+
+),
+
+club_cte2 AS
+(
+SELECT club_id, member_id, club_name FROM  club_cte 
+UNION 
+SELECT club_id,member_id,EDU FROM club WHERE EDU IS NULL 
+ORDER BY club_id
+),
+
+club_points AS
+(
+SELECT * , CASE WHEN club_name IS NULL THEN 0 
+                WHEN club_name = 'MM' THEN 0.5 
+                WHEN club_name = 'CI' THEN 0.5
+                WHEN club_name = 'CO' THEN 0.5
+                WHEN club_name = 'CD' THEN 1
+                WHEN club_name = 'CL' THEN 1
+                WHEN club_name = 'CM' THEN 1
+                END AS points
+FROM club_cte2
+)
+
+SELECT club_id, SUM(points) :: INT as total_points_scored FROM club_points
+GROUP BY club_id
+ORDER BY club_id
+```
+<img width="1023" height="278" alt="image" src="https://github.com/user-attachments/assets/947a0860-5c63-4f99-857d-804a79e10232" />
+
