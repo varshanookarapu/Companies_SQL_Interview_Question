@@ -515,3 +515,21 @@ INSERT INTO Flag_Review (flag_id, reviewed_by_yt, reviewed_date, reviewed_outcom
 ('xvhk6d', 'TRUE', '2022-03-17', 'APPROVED');
 
 ```
+
+```sql
+WITH cte AS
+(
+SELECT video_id , COUNT(uf.flag_id) as total_flag_count , SUM(CASE WHEN reviewed_by_yt = 'TRUE' THEN 1 END) AS flags_reviewed_by_yt FROM user_flag  uf
+JOIN flag_review fr ON
+uf.flag_id = fr.flag_id
+GROUP BY video_id
+ORDER BY total_flag_count DESC
+)
+
+
+SELECT video_id, flags_reviewed_by_yt FROM CTE
+WHERE total_flag_count = (SELECT MAX(total_flag_count) FROM cte)
+```
+
+<img width="1155" height="221" alt="image" src="https://github.com/user-attachments/assets/62955deb-9a8a-4d35-9cf3-a670d0ef72fa" />
+
