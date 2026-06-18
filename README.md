@@ -432,6 +432,9 @@ ORDER BY club_id
 ---
 ## SQL Server Interview Question 
 
+**Problem Statement:** Find the video(s) that received the most user flags and determine how many of these were reviewed by YouTube.
+
+We are given two tables:
 ```sql
 CREATE TABLE User_Flag (
     flag_id VARCHAR(50),
